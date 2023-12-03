@@ -21,7 +21,7 @@ public class Hook implements IXposedHookZygoteInit, IXposedHookInitPackageResour
     int colorOsVersion = ColorOSUtils.getColorOSVersion();
 
     public static XSharedPreferences prefs;
-    public static final String PACKAGE_NAME = BuildConfig.APPLICATION_ID;
+    public static final String PACKAGE_NAME = "com.wuxianlin.hookcoloros";//BuildConfig.APPLICATION_ID;
     public static String MODULE_PATH = null;
     private static File prefsFileProt = new File("/data/user_de/" +
             HookUtils.getMyUserId() +
@@ -42,7 +42,9 @@ public class Hook implements IXposedHookZygoteInit, IXposedHookInitPackageResour
         prefs.reload();
         if ("android".equals(lpparam.packageName)) {
             Pms.hookAndroid(lpparam, colorOsVersion, prefs);
+            Feature.hookOplusFeature(lpparam, colorOsVersion, prefs);
             MultiApp.hookAndroid(lpparam, colorOsVersion, prefs);
+            //Feature.hookAppFeature(lpparam, colorOsVersion, prefs);
         } else if ("com.android.launcher".equals(lpparam.packageName) ||
                 "com.oppo.launcher".equals(lpparam.packageName)) {
             Launcher.hookLauncher(lpparam, colorOsVersion, prefs);
@@ -50,7 +52,13 @@ public class Hook implements IXposedHookZygoteInit, IXposedHookInitPackageResour
             PackageInstaller.hookPackageInstaller(lpparam, colorOsVersion, prefs);
         } else if("com.heytap.themestore".equals(lpparam.packageName)){
             ThemeStore.hookThemeStore(lpparam, colorOsVersion, prefs);
-        }
+        }/* else if("com.oplus.customize.coreapp".equals(lpparam.packageName)){
+            if(colorOsVersion<ColorOSUtils.OplusOS_13_0)
+                Feature.hookAppFeature(lpparam, colorOsVersion, prefs);
+        } else if("com.oplus.appplatform".equals(lpparam.packageName)){
+            if(colorOsVersion>=ColorOSUtils.OplusOS_13_0)
+                Feature.hookAppFeature(lpparam, colorOsVersion, prefs);
+        }*/
     }
 
     @Override

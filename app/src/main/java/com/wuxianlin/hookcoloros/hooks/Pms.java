@@ -26,6 +26,12 @@ public class Pms {
         }catch (Throwable t){
             XposedBridge.log(t);
         }
+        try{
+            if(prefs.getBoolean("hook_32bit_translator", true))
+                hook32BitTranslator(lpparam, colorOsVersion);
+        }catch (Throwable t){
+            XposedBridge.log(t);
+        }
     }
 
     private static void hookAdbInstall(final XC_LoadPackage.LoadPackageParam lpparam, int colorOsVersion){
@@ -61,5 +67,13 @@ public class Pms {
                         lpparam.classLoader),
                 "isForbidDeletePackage",
                 XC_MethodReplacement.returnConstant(false));
+    }
+
+    private static void hook32BitTranslator(final XC_LoadPackage.LoadPackageParam lpparam, int colorOsVersion){
+        if(colorOsVersion<ColorOSUtils.OS_14_0)
+            return;
+        XposedHelpers.findAndHookMethod(
+                "com.android.server.pm.PackageManagerServiceExtImpl", lpparam.classLoader,
+                "isTranslatorWhitelistApp", String.class, XC_MethodReplacement.returnConstant(true));
     }
 }

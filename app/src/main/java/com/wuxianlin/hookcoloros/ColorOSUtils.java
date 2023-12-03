@@ -31,6 +31,15 @@ public class ColorOSUtils {
     public static final int OplusOS_12_2 = 25;
     public static final int OplusOS_13_0 = 26;
     public static final int OplusOS_13_1 = 27;
+    public static final int OS_13_0 = 26;
+    public static final int OS_13_1 = 27;
+    public static final int OS_13_1_1 = 28;
+    public static final int OS_13_2 = 29;
+    public static final int OS_14_0 = 30;
+    public static final int OS_14_0_1 = 31;
+    public static final int OS_14_0_2 = 32;
+    public static final int OS_14_1_0 = 33;
+    public static final int OS_15_0_0 = 34;
 
     public static int getColorOSVersion() {
         try {

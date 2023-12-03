@@ -1,16 +1,18 @@
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory
-        android:title="@string/app_about"
-        android:key="about_settings">
+        app:title="@string/app_about"
+        app:key="about_settings">
         <Preference
-            android:key="pref_app_name"
-            android:title="@string/app_name" />
+            app:key="pref_app_name"
+            app:title="@string/app_name" />
         <Preference
-            android:key="pref_app_source"
-            android:title="@string/app_source" >
+            app:key="pref_app_source"
+            app:title="@string/app_source" >
             <intent
                 android:action="android.intent.action.VIEW"
                 android:data="https://github.com/wuxianlin/HookColorOS" />
         </Preference>
     </PreferenceCategory>
+
 </PreferenceScreen>
