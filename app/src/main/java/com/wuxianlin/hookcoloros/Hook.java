@@ -21,7 +21,7 @@ public class Hook implements IXposedHookZygoteInit, IXposedHookInitPackageResour
     int colorOsVersion = ColorOSUtils.getColorOSVersion();
 
     public static XSharedPreferences prefs;
-    public static final String PACKAGE_NAME = "com.wuxianlin.hookcoloros";//BuildConfig.APPLICATION_ID;
+    public static final String PACKAGE_NAME = BuildConfig.APPLICATION_ID;
     public static String MODULE_PATH = null;
     private static File prefsFileProt = new File("/data/user_de/" +
             HookUtils.getMyUserId() +
