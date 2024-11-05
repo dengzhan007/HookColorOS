@@ -44,7 +44,7 @@ public class Hook implements IXposedHookZygoteInit, IXposedHookInitPackageResour
             Pms.hookAndroid(lpparam, colorOsVersion, prefs);
             Feature.hookOplusFeature(lpparam, colorOsVersion, prefs);
             MultiApp.hookAndroid(lpparam, colorOsVersion, prefs);
-            //Feature.hookAppFeature(lpparam, colorOsVersion, prefs);
+            Feature.hookPms(lpparam, colorOsVersion, prefs);
         } else if ("com.android.launcher".equals(lpparam.packageName) ||
                 "com.oppo.launcher".equals(lpparam.packageName)) {
             Launcher.hookLauncher(lpparam, colorOsVersion, prefs);

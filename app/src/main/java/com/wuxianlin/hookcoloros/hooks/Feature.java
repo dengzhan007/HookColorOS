@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 
+import com.wuxianlin.hookcoloros.ColorOSUtils;
 import com.wuxianlin.hookcoloros.HookUtils;
 
 import java.io.File;
@@ -20,6 +21,8 @@ public class Feature {
 
     public static void hookPms(final XC_LoadPackage.LoadPackageParam lpparam,
                                int colorOsVersion, XSharedPreferences prefs){
+        if (colorOsVersion >= ColorOSUtils.OplusOS_11_0)
+            return;
         XposedHelpers.findAndHookMethod("com.android.server.pm.PackageManagerService",
                 lpparam.classLoader, "hasSystemFeature",
                 String.class, int.class, new XC_MethodHook() {
@@ -69,6 +72,7 @@ public class Feature {
         }
     }
 
+    //TODO:hook app feature
     public static void hookAppFeature(final XC_LoadPackage.LoadPackageParam lpparam,
                                       int colorOsVersion, XSharedPreferences prefs){
         XposedHelpers.findAndHookMethod(
