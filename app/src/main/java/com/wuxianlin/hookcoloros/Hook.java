@@ -50,8 +50,6 @@ public class Hook implements IXposedHookZygoteInit, IXposedHookInitPackageResour
             Launcher.hookLauncher(lpparam, colorOsVersion, prefs);
         } else if("com.android.packageinstaller".equals(lpparam.packageName)){
             PackageInstaller.hookPackageInstaller(lpparam, colorOsVersion, prefs);
-        } else if("com.heytap.themestore".equals(lpparam.packageName)){
-            ThemeStore.hookThemeStore(lpparam, colorOsVersion, prefs);
         } else if("com.android.systemui".equals(lpparam.packageName)){
             SystemUI.hookVolume(lpparam, colorOsVersion, prefs);
         } else if("com.android.settings".equals(lpparam.packageName)) {
