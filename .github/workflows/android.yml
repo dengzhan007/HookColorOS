@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:https://github.com/dengzhan007/HookColorOS
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the code
