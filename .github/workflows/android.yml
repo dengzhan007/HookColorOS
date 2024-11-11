@@ -1,10 +1,10 @@
 name: Build & Publish Release APK
 
 on:
-  workflow_dispatch:https://github.com/dengzhan007/HookColorOS
+  workflow_dispatch:
 
 jobs:
-  build:
+  build:https://github.com/dengzhan007/HookColorOS
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the code
