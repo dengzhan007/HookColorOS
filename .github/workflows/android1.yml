@@ -2,24 +2,7 @@ name: Release
 
 # 触发条件: 这里是push以”v“开头的tag触发
 on:
-  push:
-    # 根据branch或者tags来触发
-    branches:
-      - main
-
-    tags:
-      - "v*"
-    # 忽略的标签类型，不触发构建流程(和tags不能同时写)
-    # tags-ignore:
-    #   - "d*"
-
-# strategy:
-  # 矩阵使用: ${{ matrix.os }}
-  # 下面两个矩阵，会代码就会执行 2 * 3 = 6次
-  # matrix:
-  #  os: [ubuntu-16.04, ubuntu-18.04]
-  #  node: [6, 8, 10]
-
+  workflow_dispatch:
 # 一次持续集成的运行，可以完成多个任务(下面就build)
 jobs:
   builds:
