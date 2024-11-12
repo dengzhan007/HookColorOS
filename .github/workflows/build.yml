@@ -27,7 +27,7 @@ jobs:
 
     # 安装 Android SDK
     - name: Set up Android SDK
-      uses: fluencelabs/setup-android@v1
+      uses: android-actions/setup-android@v1
       with:
         api-level: 30         # 设置你需要的 Android API 级别
         build-tools-version: '30.0.3'  # 设置构建工具版本
