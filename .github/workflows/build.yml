@@ -25,12 +25,12 @@ jobs:
         java-version: '11'
         distribution: 'adoptopenjdk'
 
-    # 设置 Android SDK
+    # 安装 Android SDK 和构建工具
     - name: Set up Android SDK
-      uses: reactivecircus/android-sdk-action@v2
+      uses: stefano-belli/setup-android-sdk@v1
       with:
-        api-level: '30'   # 设置你要构建的 Android API 版本
-        build-tools-version: '30.0.3'  # 构建工具版本
+        api-level: 30         # 设置你需要的 Android API 级别
+        build-tools-version: '30.0.3'  # 设置构建工具版本
         target: 'android-30'  # 设置目标 Android 版本
 
     # 构建 APK（选择 Release 或 Debug）
