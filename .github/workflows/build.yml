@@ -25,9 +25,9 @@ jobs:
         java-version: '11'
         distribution: 'adoptopenjdk'
 
-    # 安装 Android SDK 和构建工具
+    # 安装 Android SDK
     - name: Set up Android SDK
-      uses: stefano-belli/setup-android-sdk@v1
+      uses: fluencelabs/setup-android@v1
       with:
         api-level: 30         # 设置你需要的 Android API 级别
         build-tools-version: '30.0.3'  # 设置构建工具版本
