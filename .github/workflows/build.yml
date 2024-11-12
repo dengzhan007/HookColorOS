@@ -33,9 +33,13 @@ jobs:
         build-tools-version: '30.0.3'  # 设置构建工具版本
         target: 'android-30'  # 设置目标 Android 版本
 
-    # 设置 ANDROID_HOME 环境变量，使用 $GITHUB_ENV 文件
+    # 设置 ANDROID_HOME 环境变量
     - name: Set ANDROID_HOME environment variable
       run: echo "ANDROID_HOME=/home/runner/android" >> $GITHUB_ENV
+
+    # 将 Android SDK 的路径添加到 PATH 中
+    - name: Add Android SDK to PATH
+      run: echo "$ANDROID_HOME/tools/bin" >> $GITHUB_PATH
 
     # 构建 APK（选择 Release 或 Debug）
     - name: Build APK
