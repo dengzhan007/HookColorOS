@@ -48,8 +48,15 @@ public class Launcher {
     }
 
     private static void hookMemoryInfo(final XC_LoadPackage.LoadPackageParam lpparam) {
-        XposedHelpers.findAndHookMethod("com.oplus.quickstep.memory.MemoryInfoManager", lpparam.classLoader,
-                "isAllowMemoryInfoDisplay", XC_MethodReplacement.returnConstant(true));
+        XposedHelpers.findAndHookMethod("com.oplus.quickstep.memory.MemoryInfoManager",
+                lpparam.classLoader, "judgeWhetherAllowMemoDisplay", new XC_MethodHook() {
+                    @Override
+                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                        XposedHelpers.setBooleanField(param.thisObject, "mAllowMemoryInfoDisplay", true);
+                        XposedHelpers.callMethod(param.thisObject, "saveAllowMemoryInfoDisplay", true);
+                        param.setResult(null);
+                    }
+                });
     }
 
     private static void hookRecentsAutoFocusToNextPage(final XC_LoadPackage.LoadPackageParam lpparam) {
@@ -61,7 +68,8 @@ public class Launcher {
         Class<?> AbstractFloatingView = XposedHelpers.findClass("com.android.launcher3.AbstractFloatingView", lpparam.classLoader);
         XposedHelpers.findAndHookMethod(AbstractFloatingView, "closeOpenViews",
                 "com.android.launcher3.views.ActivityContext", boolean.class, int.class, boolean.class, new XC_MethodHook() {
-            protected void beforeHookedMethod(XC_MethodHook.MethodHookParam param) throws Throwable {
+            @Override
+            protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                 Object activity = param.args[0];
                 boolean animate = (boolean) param.args[1];
                 int type = (int) param.args[2];
@@ -76,11 +84,12 @@ public class Launcher {
                 if ((type & TYPE_FOLDER) == 0) {
                     return;
                 }
-                int childCount = ((Integer) XposedHelpers.callMethod(dragLayer, "getChildCount", new Object[0])).intValue();
+                int childCount = (int) XposedHelpers.callMethod(dragLayer, "getChildCount");
                 for (int i = childCount - 1; i >= 0; i--) {
                     View child = (View) XposedHelpers.callMethod(dragLayer, "getChildAt", i);
                     if (AbstractFloatingView.isInstance(child)) {
                         if ((boolean) XposedHelpers.findMethodExact(AbstractFloatingView, "isOfType", int.class).invoke(child, TYPE_FOLDER)) {
+                        //if ((boolean) XposedHelpers.findMethodExact(AbstractFloatingView, "isOfType", int.class).invoke(child, type)) {
                             XposedHelpers.findMethodExact(AbstractFloatingView, "close", boolean.class).invoke(child, animate);
                         }
                     }
