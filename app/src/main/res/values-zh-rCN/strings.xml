@@ -3,4 +3,15 @@
     <string name="app_about">关于</string>
     <string name="app_source">源码</string>
     <string name="apps_switch">应用</string>
+    <string name="launcher">桌面</string>
+    <string name="launcher_app_limit">解除桌面锁定应用数限制</string>
+    <string name="memory_info">最近任务显示内存信息</string>
+    <string name="memory_info_desc">设置->桌面与锁屏->最近任务管理</string>
+    <string name="recents_auto_focus_to_next_page">解除最近任务自动显示下一个APP</string>
+    <string name="home_auto_close_folder">回桌面自动关闭打开的文件夹</string>
+    <string name="settings">设置</string>
+    <string name="settings_dsu">DSU 动态系统更新</string>
+    <string name="settings_dsu_desc">设置->开发者选项->DSU Loader</string>
+    <string name="systemui">状态栏与控制中心</string>
+    <string name="systemui_volume">移除控制中心音量调节</string>
 </resources>

@@ -9,6 +9,8 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage;
 public class SystemUI {
     public static void hookVolume(final XC_LoadPackage.LoadPackageParam lpparam,
                                   int colorOsVersion, XSharedPreferences prefs) {
+        if (!prefs.getBoolean("hook_systemui_volume", true))
+            return;
         try {
             XposedHelpers.findAndHookMethod("com.oplusos.systemui.common.feature.QSFeatureOption",
                     lpparam.classLoader, "isSupportVolumeSeekBar", XC_MethodReplacement.returnConstant(false));

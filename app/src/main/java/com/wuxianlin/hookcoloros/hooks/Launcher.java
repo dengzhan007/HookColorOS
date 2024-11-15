@@ -1,5 +1,6 @@
 package com.wuxianlin.hookcoloros.hooks;
 
+import android.content.Context;
 import android.view.View;
 
 import com.wuxianlin.hookcoloros.ColorOSUtils;
@@ -9,6 +10,7 @@ import java.io.File;
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XSharedPreferences;
+import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
@@ -17,23 +19,39 @@ public class Launcher {
     public static void hookLauncher(final XC_LoadPackage.LoadPackageParam lpparam,
                                     int colorOsVersion, XSharedPreferences prefs) {
         if (prefs.getBoolean("hook_launcher_app_limit", true)) {
-            hookLauncherAppLimit(lpparam);
+            try{
+                hookLauncherAppLimit(lpparam, colorOsVersion);
+            } catch (Throwable t){
+                XposedBridge.log(t);
+            }
         }
         if (colorOsVersion < ColorOSUtils.OS_15_0_0){
             return;
         }
         if (prefs.getBoolean("hook_memory_info", true)){
-            hookMemoryInfo(lpparam);
+            try{
+                hookMemoryInfo(lpparam);
+            } catch (Throwable t){
+                XposedBridge.log(t);
+            }
         }
         if (prefs.getBoolean("hook_hook_recents_auto_focus_to_next_page", true)){
-            hookRecentsAutoFocusToNextPage(lpparam);
+            try{
+                hookRecentsAutoFocusToNextPage(lpparam);
+            } catch (Throwable t){
+                XposedBridge.log(t);
+            }
         }
         if (prefs.getBoolean("hook_home_auto_close_folder", true)){
-            hookHomeAutoCloseFolder(lpparam);
+            try{
+                hookHomeAutoCloseFolder(lpparam);
+            } catch (Throwable t){
+                XposedBridge.log(t);
+            }
         }
     }
 
-    private static void hookLauncherAppLimit(final XC_LoadPackage.LoadPackageParam lpparam) {
+    private static void hookLauncherAppLimit(final XC_LoadPackage.LoadPackageParam lpparam, int colorOsVersion) {
         XposedHelpers.findAndHookMethod("android.app.SharedPreferencesImpl",
                 lpparam.classLoader, "getInt", String.class, int.class, new XC_MethodHook() {
                     @Override
@@ -45,6 +63,12 @@ public class Launcher {
                             param.setResult(1000);
                     }
                 });
+        if (colorOsVersion < ColorOSUtils.OS_15_0_0){
+            return;
+        }
+        /*XposedHelpers.findAndHookMethod("com.oplus.quickstep.applock.OplusLockManager$Companion",
+                lpparam.classLoader, "getLockAppLimitForAppFeature",
+                Context.class, String.class, int.class, XC_MethodReplacement.returnConstant(1000));*/
     }
 
     private static void hookMemoryInfo(final XC_LoadPackage.LoadPackageParam lpparam) {

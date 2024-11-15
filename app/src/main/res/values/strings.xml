@@ -3,4 +3,15 @@
     <string name="app_about">About</string>
     <string name="app_source">Source</string>
     <string name="apps_switch">Apps</string>
+    <string name="launcher">Launcher</string>
+    <string name="launcher_app_limit">No launcher lock app nums limit</string>
+    <string name="memory_info">Show memery info in recent</string>
+    <string name="memory_info_desc">Settings->Home screen/Lock screen->Recent tasks manager</string>
+    <string name="recents_auto_focus_to_next_page">Remove recents auto focus to next app page</string>
+    <string name="home_auto_close_folder">Auto close folder when home</string>
+    <string name="settings">Settings</string>
+    <string name="settings_dsu">Dynamic System Update</string>
+    <string name="settings_dsu_desc">Settings->Developer Options->DSU Loader</string>
+    <string name="systemui">SystemUI</string>
+    <string name="systemui_volume">Remove Volume SeekBar</string>
 </resources>

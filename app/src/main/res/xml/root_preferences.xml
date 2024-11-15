@@ -1,6 +1,44 @@
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory
+        app:title="@string/launcher"
+        app:key="launcher_settings">
+        <SwitchPreferenceCompat
+            app:title="@string/launcher_app_limit"
+            app:defaultValue="true"
+            app:key="hook_launcher_app_limit"/>
+        <SwitchPreferenceCompat
+            app:title="@string/memory_info"
+            app:summary="@string/memory_info_desc"
+            app:defaultValue="true"
+            app:key="hook_memory_info"/>
+        <SwitchPreferenceCompat
+            app:title="@string/recents_auto_focus_to_next_page"
+            app:defaultValue="true"
+            app:key="hook_hook_recents_auto_focus_to_next_page"/>
+        <SwitchPreferenceCompat
+            app:title="@string/home_auto_close_folder"
+            app:defaultValue="true"
+            app:key="hook_home_auto_close_folder"/>
+    </PreferenceCategory>
+    <PreferenceCategory
+        app:title="@string/settings"
+        app:key="settings_settings">
+        <SwitchPreferenceCompat
+            app:title="@string/settings_dsu"
+            app:summary="@string/settings_dsu_desc"
+            app:defaultValue="true"
+            app:key="hook_dsu"/>
+    </PreferenceCategory>
+    <PreferenceCategory
+        app:title="@string/systemui"
+        app:key="systemui_settings">
+        <SwitchPreferenceCompat
+            app:title="@string/systemui_volume"
+            app:defaultValue="true"
+            app:key="hook_systemui_volume"/>
+    </PreferenceCategory>
+    <PreferenceCategory
         app:title="@string/app_about"
         app:key="about_settings">
         <Preference
