@@ -38,6 +38,8 @@ public class Feature {
                     param.setResult(true);
                 else if((Build.MODEL.endsWith("t")||Build.MODEL.endsWith("T00")||Build.MODEL.endsWith("T10")||Build.MODEL.endsWith("T20"))&&name.equals("oppo.common_center.lock.simcard"))
                     param.setResult(false);
+                else if(/*"cn.google.services".equals(name)||*/"com.google.android.feature.services_updater".equals(name))
+                    param.setResult(false);
             }
         });
     }
