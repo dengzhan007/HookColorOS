@@ -53,12 +53,16 @@ public class Feature {
                         if("oplus.software.startup_strategy_restrict".equals(param.args[0])) {
                             param.setResult(false);
                         }
+                        if("oplus.software.radio.networkless_support".equals(param.args[0])){
+                            param.setResult(true);
+                        }
                         //XposedBridge.log("hasFeatureMap:"+param.args[0]);
                     }
                 });
         /*XposedHelpers.findAndHookMethod("com.android.server.content.OplusFeatureConfigManagerService", lpparam.classLoader, "systemReady", new XC_MethodHook() {
             @Override
             protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                XposedHelpers.callMethod(param.thisObject,"availableFeature","oplus.software.radio.networkless_support", 9);
                 XposedHelpers.callMethod(param.thisObject,"unavailableFeature","oplus.software.startup_strategy_restrict", 9);
                 XposedHelpers.callMethod(param.thisObject,"filterAvailableFeatures");
                 XposedHelpers.callMethod(param.thisObject,"updateFeaturesMapForStatic");
