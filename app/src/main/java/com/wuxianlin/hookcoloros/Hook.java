@@ -54,13 +54,15 @@ public class Hook implements IXposedHookZygoteInit, IXposedHookInitPackageResour
             SystemUI.hookVolume(lpparam, colorOsVersion, prefs);
         } else if("com.android.settings".equals(lpparam.packageName)) {
             Settings.hookDsu(lpparam, colorOsVersion, prefs);
-        }/* else if("com.oplus.customize.coreapp".equals(lpparam.packageName)){
+        } else if("com.oplus.customize.coreapp".equals(lpparam.packageName)){
             if(colorOsVersion<ColorOSUtils.OplusOS_13_0)
                 Feature.hookAppFeature(lpparam, colorOsVersion, prefs);
         } else if("com.oplus.appplatform".equals(lpparam.packageName)){
             if(colorOsVersion>=ColorOSUtils.OplusOS_13_0)
                 Feature.hookAppFeature(lpparam, colorOsVersion, prefs);
-        }*/
+        } else if("com.heytap.appplatform".equals(lpparam.packageName)){
+            Feature.hookAppFeature(lpparam, colorOsVersion, prefs);
+        }
     }
 
     @Override

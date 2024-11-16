@@ -8,6 +8,7 @@
         <item>com.android.packageinstaller</item>
         <item>com.oplus.customize.coreapp</item>
         <item>com.oplus.appplatform</item>
+        <item>com.heytap.appplatform</item>
         <item>com.android.systemui</item>
     </string-array>
 </resources>

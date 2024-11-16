@@ -2,6 +2,8 @@ package com.wuxianlin.hookcoloros.hooks;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 import android.os.Build;
 
@@ -42,6 +44,8 @@ public class Feature {
 
     public static void hookOplusFeature(final XC_LoadPackage.LoadPackageParam lpparam,
                                     int colorOsVersion, XSharedPreferences prefs) {
+        if(Build.VERSION.SDK_INT < 30)
+            return;
         XposedHelpers.findAndHookMethod("com.android.server.content.OplusFeatureConfigManagerService",
                 lpparam.classLoader, "hasFeatureMap", String.class, int.class, new XC_MethodHook() {
                     @Override
@@ -52,46 +56,61 @@ public class Feature {
                         //XposedBridge.log("hasFeatureMap:"+param.args[0]);
                     }
                 });
+        /*XposedHelpers.findAndHookMethod("com.android.server.content.OplusFeatureConfigManagerService", lpparam.classLoader, "systemReady", new XC_MethodHook() {
+            @Override
+            protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                XposedHelpers.callMethod(param.thisObject,"unavailableFeature","oplus.software.startup_strategy_restrict", 9);
+                XposedHelpers.callMethod(param.thisObject,"filterAvailableFeatures");
+                XposedHelpers.callMethod(param.thisObject,"updateFeaturesMapForStatic");
+                XposedHelpers.callMethod(param.thisObject,"updateTotalFeaturesMap");
+            }
+        });*/
     }
 
-    public static void update(){
-        Uri uri = Uri.parse("content://com.oplus.customize.coreapp.configmanager.configprovider.AppFeatureProvider").buildUpon().appendPath("app_feature").build();
+    private static void insertFeature(SQLiteDatabase sqLiteDatabase){
         for(String feature:new String[]{"com.android.systemui.highlight_nodeveloper",
                 "com.android.settings.account_dialog.disable",
                 "com.android.settings.verification_dialog.disable",
                 "com.android.systemui.otg_auto_close_alarm_disable",
                 "com.android.settings.need_show_2g3g"}) {
-            Cursor cursor = HookUtils.getContext().getContentResolver()
-                    .query(uri, null, "featurename=?", new String[]{feature}, null);
-            if(cursor!=null&&cursor.getCount()>0)
-                continue;
             ContentValues values = new ContentValues();
             values.put("featurename", feature);
             //values.put("parameters", "boolean=true");
-            HookUtils.getContext().getContentResolver().insert(uri, values);
+            long num = sqLiteDatabase.insert("app_feature",null, values);
+            //XposedBridge.log(feature+","+num);
         }
     }
 
-    //TODO:hook app feature
     public static void hookAppFeature(final XC_LoadPackage.LoadPackageParam lpparam,
-                                      int colorOsVersion, XSharedPreferences prefs){
-        XposedHelpers.findAndHookMethod(
-                "com.oplus.customize.appfeature.configprovider.AppFeatureProvider",
-                lpparam.classLoader, "query",
-                Uri.class, String[].class, String.class, String[].class,String.class, new XC_MethodHook() {
-            @Override
-            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                String query = (String)param.args[2];
-                String[] args = (String[])param.args[3];
-                /*Cursor cursor = (Cursor)param.getResult();
-                if("featurename=?".equals(query)){
-                    cursor.getColumnIndex("parameters");
-                }*/
-                //XposedBridge.log("AppFeatureProvider.query:"+query+",args:"+
-                //        Arrays.toString((String[])args));
-            }
-        });
-        update();
+                                          int colorOsVersion, XSharedPreferences prefs){
+        XposedHelpers.findAndHookMethod("android.database.sqlite.SQLiteDatabase",
+                lpparam.classLoader, "delete", String.class, String.class, String[].class, new XC_MethodHook() {
+                    @Override
+                    protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                        //XposedBridge.log("delete");
+                        //XposedBridge.log(param.args[0].toString());
+                        if(!"app_feature".equals(param.args[0]))
+                            return;
+                        SQLiteDatabase sqLiteDatabase = (SQLiteDatabase)param.thisObject;
+                        //XposedBridge.log(sqLiteDatabase.getPath());
+                        if(!sqLiteDatabase.getPath().contains("config_feature.db"))
+                            return;
+                        insertFeature(sqLiteDatabase);
+                    }
+                });
+        XposedHelpers.findAndHookMethod("com.oplus.customize.appfeature.configprovider.AppFeatureProvider",
+                lpparam.classLoader, "onCreate", new XC_MethodHook() {
+                    @Override
+                    protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                        //XposedBridge.log("onCreate");
+                        SQLiteOpenHelper mConfigDbOpenHelper = (SQLiteOpenHelper)XposedHelpers
+                                .findFirstFieldByExactType(param.thisObject.getClass(),
+                                        XposedHelpers.findClass(
+                                                "com.oplus.customize.appfeature.configprovider.ConfigDbOpenHelper",
+                                                lpparam.classLoader)).get(param.thisObject);
+                        insertFeature(mConfigDbOpenHelper.getWritableDatabase());
+                    }
+                });
     }
 
 }
